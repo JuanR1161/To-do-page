@@ -1,7 +1,7 @@
-<template>
-  <div v-if="showSection === 'list'">
+<template >
+  <div v-if="showSection === 'list'" class="todo-container bg-success-subtle " >
     <h1>To do list</h1>
-    <table class="table table-striped">
+    <table class="table table-striped ">
       <tbody>
         <tr v-for="(item, index) in nameList" :key="index">
           <td :class="{ completed: item.checked }">
@@ -35,7 +35,6 @@ const showSection = ref('list');
 const newName = ref('');
 const nameList = ref([]);
 
-// Load the nameList from localStorage when the component is mounted
 onMounted(() => {
   const storedList = localStorage.getItem('nameList');
   if (storedList) {
@@ -76,6 +75,30 @@ function toggleCheckmark(index) {
 
 <style>
 .completed {
-  text-decoration: line-through;
+  color: green !important;
+  font-weight: bold !important;
 }
+
+
+.todo-container {
+  border: 2px solid #000000;
+  border-radius: 0px;
+  padding: 0px;
+  
+margin: 50px;
+  background-color: #f8f9fa;
+}
+
+.style-a{
+ 
+  color: black !important;
+  font-weight: bold;
+  margin: auto;
+}
+
+.bg-success-subtle {
+  padding: 40px;
+}
+
+
 </style>
