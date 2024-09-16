@@ -26,17 +26,17 @@
 <script setup>
 import { ref } from 'vue'
 
-// Read the warning setting from localStorage and convert it to a boolean
+
 function getEnableWarning() {
   const storedValue = localStorage.getItem("enableWarning");
-  return storedValue === 'true'; // Convert string to boolean
+  return storedValue === 'true'; 
 }
 
 const showSection = ref('list');
 const newName = ref('');
 const nameList = ref([]);
 
-// Function to add a new name to the list
+
 function addName() {
   const noname = newName.value.trim();
   if (noname) {
@@ -45,7 +45,6 @@ function addName() {
   }
 }
 
-// Function to delete an item with a confirmation prompt if required
 function delMessage(index) {
   if (getEnableWarning()) {
     if (window.confirm("Do you really want to delete the task?")) {
@@ -56,7 +55,7 @@ function delMessage(index) {
   }
 }
 
-// Function to toggle the checked state of an item
+
 function toggleCheckmark(index) {
   nameList.value[index].checked = !nameList.value[index].checked;
 }
