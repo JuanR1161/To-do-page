@@ -1,8 +1,4 @@
 <template>
-
-
-
-
   <div v-if="showSection === 'list'">
     <h1>To do list</h1>
     <table class="table table-striped">
@@ -25,29 +21,22 @@
     <input v-model="newName" />
     <button @click="addName">Add</button>
   </div>
-
-
- 
-
 </template>
 
 <script setup>
 import { ref } from 'vue'
 
-
-function enableWarning (){
-  console.log(localStorage.getItem("enableWarning"))
-return localStorage.getItem("enableWarning")
-
-
+// Read the warning setting from localStorage and convert it to a boolean
+function getEnableWarning() {
+  const storedValue = localStorage.getItem("enableWarning");
+  return storedValue === 'true'; // Convert string to boolean
 }
 
 const showSection = ref('list');
-
 const newName = ref('');
 const nameList = ref([]);
 
-
+// Function to add a new name to the list
 function addName() {
   const noname = newName.value.trim();
   if (noname) {
@@ -56,23 +45,19 @@ function addName() {
   }
 }
 
-
-
+// Function to delete an item with a confirmation prompt if required
 function delMessage(index) {
-
-
-
-if (enableWarning()) {
+  if (getEnableWarning()) {
     if (window.confirm("Do you really want to delete the task?")) {
-        nameList.value.splice(index, 1);
+      nameList.value.splice(index, 1);
     }
-} else {
+  } else {
     nameList.value.splice(index, 1);
-}
+  }
 }
 
+// Function to toggle the checked state of an item
 function toggleCheckmark(index) {
   nameList.value[index].checked = !nameList.value[index].checked;
 }
 </script>
-
