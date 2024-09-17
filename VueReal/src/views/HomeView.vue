@@ -67,7 +67,7 @@ function pendingMessage(index) {
     item.pending = true;
     item.checked = false;
   } else if (item.pending) {
-    
+
     item.pending = false;
   } else {
 
@@ -109,7 +109,7 @@ function toggleCheckmark(index) {
 }
 
 .pending {
-  color: rgb(235, 193, 7)!important;
+  color: rgb(235, 193, 7) !important;
   font-weight: bold !important;
 }
 

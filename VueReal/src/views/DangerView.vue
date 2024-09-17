@@ -17,10 +17,10 @@ function deList() {
 
 function dellList(index) {
 
-    if (window.confirm("Do you really want to delete the list?")) {
-      localStorage.setItem("nameList", [])
-      saveListToLocalStorage();
-    } else {
+  if (window.confirm("Do you really want to delete the list?")) {
+    localStorage.setItem("nameList", [])
+    saveListToLocalStorage();
+  } else {
     nameList.value.splice(index, 1);
     saveListToLocalStorage();
   }
