@@ -1,24 +1,25 @@
 <template>
-  <div v-if="showSection === 'list'" class="todo-container bg-success-subtle ">
+  <div v-if="showSection === 'list'" class="todo-container bg-success-subtle">
     <h1>To do list</h1>
-    <table class="table table-striped ">
+    <table class="table table-striped">
       <tbody>
         <tr v-for="(item, index) in nameList" :key="index">
-          <td :class="{ completed: item.checked }">
+          <td :class="{ completed: item.checked && !item.pending, pending: item.pending && !item.checked }">
             {{ item.name }}
           </td>
           <td>
-            <div class="style-b" >
+            <div class="style-b">
               <button @click="toggleCheckmark(index)">
                 <span class="checkmark">✔️</span>
+              </button>
+              <button @click="pendingMessage(index)">
+                <span class="checkmark">⌛</span>
               </button>
               <button @click="delMessage(index)">
                 <span class="checkmark">✖</span>
               </button>
             </div>
           </td>
-
-
         </tr>
       </tbody>
     </table>
@@ -53,10 +54,26 @@ function saveListToLocalStorage() {
 function addName() {
   const noname = newName.value.trim();
   if (noname) {
-    nameList.value.push({ name: noname, checked: false });
+    nameList.value.push({ name: noname, checked: false, pending: false });
     newName.value = '';
     saveListToLocalStorage();
   }
+}
+
+function pendingMessage(index) {
+  const item = nameList.value[index];
+  if (item.checked) {
+    // If the item is checked, mark it as pending and not checked
+    item.pending = true;
+    item.checked = false;
+  } else if (item.pending) {
+    // If the item is pending, mark it as not pending
+    item.pending = false;
+  } else {
+    // If the item is neither checked nor pending, mark it as pending
+    item.pending = true;
+  }
+  saveListToLocalStorage();
 }
 
 function delMessage(index) {
@@ -72,7 +89,15 @@ function delMessage(index) {
 }
 
 function toggleCheckmark(index) {
-  nameList.value[index].checked = !nameList.value[index].checked;
+  const item = nameList.value[index];
+  if (item.pending) {
+    // If the item is pending, toggle to checked
+    item.checked = true;
+    item.pending = false;
+  } else {
+    // Toggle checked state
+    item.checked = !item.checked;
+  }
   saveListToLocalStorage();
 }
 </script>
@@ -83,27 +108,31 @@ function toggleCheckmark(index) {
   font-weight: bold !important;
 }
 
+.pending {
+  color: yellow !important;
+  font-weight: bold !important;
+}
 
 .todo-container {
   border: 2px solid #000000;
   border-radius: 0px;
   padding: 0px;
-
   margin: 50px;
   background-color: #f8f9fa;
 }
 
 .style-a {
-
   color: black !important;
   font-weight: bold;
   margin: auto;
 }
+
 .style-b {
   display: flex;
-  justify-content: flex-end; 
-  gap: 10px; 
+  justify-content: flex-end;
+  gap: 10px;
 }
+
 .bg-success-subtle {
   padding: 40px;
 }
