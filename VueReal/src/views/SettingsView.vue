@@ -1,5 +1,5 @@
 <template>
-    <div  class="todo-container bg-success-subtle ">
+    <div class="todo-container bg-success-subtle ">
 
         <h1>Settings</h1>
         Ask when you want to delete a task
@@ -11,6 +11,7 @@
                 ✖
             </template>
         </button>
+
 
     </div>
 
@@ -31,6 +32,8 @@ function toggleWarning() {
 watch(enableWarning, (newValue) => {
     localStorage.setItem("enableWarning", newValue);
 });
+
+
 </script>
 
 
