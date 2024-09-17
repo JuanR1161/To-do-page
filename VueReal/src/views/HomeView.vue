@@ -63,14 +63,14 @@ function addName() {
 function pendingMessage(index) {
   const item = nameList.value[index];
   if (item.checked) {
-    // If the item is checked, mark it as pending and not checked
+
     item.pending = true;
     item.checked = false;
   } else if (item.pending) {
-    // If the item is pending, mark it as not pending
+    
     item.pending = false;
   } else {
-    // If the item is neither checked nor pending, mark it as pending
+
     item.pending = true;
   }
   saveListToLocalStorage();
@@ -109,7 +109,7 @@ function toggleCheckmark(index) {
 }
 
 .pending {
-  color: yellow !important;
+  color: rgb(235, 193, 7)!important;
   font-weight: bold !important;
 }
 
