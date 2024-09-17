@@ -27,8 +27,6 @@
   </div>
 </template>
 
-//script
-//script
 <script setup>
 import { ref, onMounted } from 'vue';
 
