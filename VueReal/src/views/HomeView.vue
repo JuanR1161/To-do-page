@@ -17,6 +17,8 @@
               </button>
             </div>
           </td>
+
+
         </tr>
       </tbody>
     </table>
@@ -25,6 +27,7 @@
   </div>
 </template>
 
+//script
 <script setup>
 import { ref, onMounted } from 'vue';
 
