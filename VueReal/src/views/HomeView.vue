@@ -1,5 +1,5 @@
-<template >
-  <div v-if="showSection === 'list'" class="todo-container bg-success-subtle " >
+<template>
+  <div v-if="showSection === 'list'" class="todo-container bg-success-subtle ">
     <h1>To do list</h1>
     <table class="table table-striped ">
       <tbody>
@@ -8,12 +8,14 @@
             {{ item.name }}
           </td>
           <td>
-            <button @click="toggleCheckmark(index)">
-              <span class="checkmark">✔️</span>
-            </button>
-            <button @click="delMessage(index)">
-              <span class="checkmark">✖</span>
-            </button>
+            <div class="style-b" >
+              <button @click="toggleCheckmark(index)">
+                <span class="checkmark">✔️</span>
+              </button>
+              <button @click="delMessage(index)">
+                <span class="checkmark">✖</span>
+              </button>
+            </div>
           </td>
         </tr>
       </tbody>
@@ -28,7 +30,7 @@ import { ref, onMounted } from 'vue';
 
 function getEnableWarning() {
   const storedValue = localStorage.getItem("enableWarning");
-  return storedValue === 'true'; 
+  return storedValue === 'true';
 }
 
 const showSection = ref('list');
@@ -84,21 +86,23 @@ function toggleCheckmark(index) {
   border: 2px solid #000000;
   border-radius: 0px;
   padding: 0px;
-  
-margin: 50px;
+
+  margin: 50px;
   background-color: #f8f9fa;
 }
 
-.style-a{
- 
+.style-a {
+
   color: black !important;
   font-weight: bold;
   margin: auto;
 }
-
+.style-b {
+  display: flex;
+  justify-content: flex-end; 
+  gap: 10px; 
+}
 .bg-success-subtle {
   padding: 40px;
 }
-
-
 </style>

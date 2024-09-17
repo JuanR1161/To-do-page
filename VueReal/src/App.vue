@@ -25,7 +25,7 @@
   
   
   const navegationItems=[
-    {label:"Home", route:"/"},
+    {label:"List", route:"/"},
     {label:"Settings", route:"/settings"},
     {label:"Danger", route:"/danger"},
     {label:"About", route:"/about"},
