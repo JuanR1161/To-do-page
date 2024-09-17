@@ -25,10 +25,10 @@
   
   
   const navegationItems=[
-    {label:"home", route:"/"},
-    {label:"settings", route:"/settings"},
-    {label:"danger", route:"/danger"},
-    {label:"about", route:"/about"},
+    {label:"Home", route:"/"},
+    {label:"Settings", route:"/settings"},
+    {label:"Danger", route:"/danger"},
+    {label:"About", route:"/about"},
   ]
   </script>
   
