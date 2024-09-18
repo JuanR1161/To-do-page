@@ -4,11 +4,9 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th>
-            Title
-          </th>
+          <th>Title</th>
           <th>Description</th>
-          <th> Date</th>
+          <th>Date</th>
           <th></th>
         </tr>
       </thead>
@@ -17,13 +15,11 @@
           <td :class="getClass(item)">
             {{ item.name }}
           </td>
-          <td :class="getClass(item)">
+          <td>
             {{ item.descr }}
-              
           </td>
           <td>
-            {{ item.createdDate }}
-
+            {{ format_time(item.createdDate) }}
           </td>
           <td>
             <div class="style-b">
@@ -42,55 +38,55 @@
       </tbody>
     </table>
     <h2>Title</h2>
-    <h1></h1>
     <input v-model="newTask.title" />
-   
-    <h1></h1>
     <h2>Description</h2>
     <input v-model="newTask.descr" />
-    <button @click="addTask" >Add</button>
-  
+    <!-- Disable the button if title or description is empty -->
+    <button :disabled="!canAddTask" @click="addTask">Add</button>
   </div>
 </template>
 
-
-
-
-
 <script setup>
 import { getEnablewarning } from '@/utils/settings';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 
 const showSection = ref('list');
-const newTask = ref({})
-const newName = ref('');
-const newDesc = ref('');
+const newTask = ref({
+  title: '',
+  descr: ''
+});
 const nameList = ref([]);
-const descList = ref([]);
 const taskColor = ref(localStorage.getItem('enableTaskColor') || 'green');
 
+const canAddTask = computed(() => {
+  return newTask.value.title.trim() !== '' && newTask.value.descr.trim() !== '';
+});
 
-function format_time(s) {
+function format_time(timestamp) {
   const dtFormat = new Intl.DateTimeFormat('en-GB', {
-    timeStyle: 'medium',
+    dateStyle: 'medium',
+    timeStyle: 'short',
     timeZone: 'UTC'
   });
-  
-  return dtFormat.format(new Date(s * 1e3));
+  return dtFormat.format(new Date(timestamp));
 }
-
-console.log( format_time(12345) );
-
 
 function addTask() {
   const noname = newTask.value.title.trim();
   if (noname) {
-    nameList.value.push({ name: noname, checked: false, pending: false, descr: newTask.value.descr, createdDate: Date.now() });
-    newName.value = '';
+    nameList.value.push({
+      name: noname,
+      checked: false,
+      pending: false,
+      descr: newTask.value.descr,
+      createdDate: Date.now()
+    });
+
+    newTask.value.title = '';
+    newTask.value.descr = '';
     saveListToLocalStorage();
   }
 }
-
 
 onMounted(() => {
   const storedList = localStorage.getItem('nameList');
@@ -103,8 +99,6 @@ onMounted(() => {
 function saveListToLocalStorage() {
   localStorage.setItem('nameList', JSON.stringify(nameList.value));
 }
-
-
 
 function pendingMessage(index) {
   const item = nameList.value[index];
@@ -120,7 +114,7 @@ function pendingMessage(index) {
 }
 
 function delMessage(index) {
-  const enableWarning = getEnablewarning()
+  const enableWarning = getEnablewarning();
   if (enableWarning) {
     if (window.confirm("Do you really want to delete the task?")) {
       nameList.value.splice(index, 1);
@@ -145,12 +139,13 @@ function toggleCheckmark(index) {
 
 function getClass(item) {
   return {
-    completed: item.checked && !item.pending,
-    pending: item.pending && !item.checked,
-    [`completed-${taskColor.value}`]: item.checked && !item.pending
+    [`completed-${taskColor.value}`]: item.checked && !item.pending,
+    pending: item.pending && !item.checked
   };
 }
+
 </script>
+
 
 <style>
 .completed-green {
