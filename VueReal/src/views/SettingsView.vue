@@ -1,54 +1,97 @@
 <template>
-    <div class="todo-container bg-success-subtle ">
-        <h1>Settings</h1>Ask when you want to delete a task
-        <button @click="toggleWarning">
-            <template v-if="enableWarning">
-                ✔️
-            </template>
-            <template v-else>
-                ✖
-            </template>
-        </button>
+    <div class="todo-container bg-success-subtle">
+        <h1>Settings</h1>
+
+        <div class="setting-item">
+            <p>Ask when you want to delete a task</p>
+            <button @click="toggleWarning" class="square-button">
+                <template v-if="enableWarning">
+                    ✔️
+                </template>
+                <template v-else>
+                    ✖
+                </template>
+            </button>
+        </div>
+
+        <div class="setting-item">
+            <p>Completed tasks color</p>
+            <button @click="toggleTaskColor" :style="{ backgroundColor: currentColor }" class="square-button">
+            
+            </button>
+        </div>
     </div>
 </template>
 
-
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, watch } from 'vue';
+
 const enableWarning = ref(localStorage.getItem("enableWarning") === 'true');
+const taskColorOptions = ['green', 'purple', 'blue'];
+const taskColorNames = { green: 'Green', purple: 'Purple', blue: 'Blue' };
+const enableTaskColor = ref(localStorage.getItem("enableTaskColor") || 'green');
+
+const currentColor = ref(enableTaskColor.value);
+const currentColorName = ref(taskColorNames[enableTaskColor.value]);
 
 function toggleWarning() {
     enableWarning.value = !enableWarning.value;
     localStorage.setItem("enableWarning", enableWarning.value);
 }
+
+function toggleTaskColor() {
+    const currentIndex = taskColorOptions.indexOf(currentColor.value);
+    const nextColor = taskColorOptions[(currentIndex + 1) % taskColorOptions.length];
+    currentColor.value = nextColor;
+    currentColorName.value = taskColorNames[nextColor];
+    enableTaskColor.value = nextColor;
+    localStorage.setItem("enableTaskColor", nextColor);
+}
+
 watch(enableWarning, (newValue) => {
     localStorage.setItem("enableWarning", newValue);
 });
+
+watch(enableTaskColor, (newValue) => {
+    localStorage.setItem("enableTaskColor", newValue);
+});
 </script>
+
 <style>
-.completed {
-    color: green !important;
-    font-weight: bold !important;
-}
-
-
 .todo-container {
     border: 2px solid #000000;
     border-radius: 0px;
     padding: 0px;
-
     margin: 50px;
     background-color: #f8f9fa;
 }
 
-.style-a {
-
-    color: black !important;
-    font-weight: bold;
-    margin: auto;
-}
-
 .bg-success-subtle {
     padding: 40px;
+}
+
+.setting-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.setting-item p {
+    margin: 0;
+    font-size: 18px;
+}
+
+.square-button {
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
 }
 </style>

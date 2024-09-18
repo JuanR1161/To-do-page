@@ -4,7 +4,7 @@
     <table class="table table-striped">
       <tbody>
         <tr v-for="(item, index) in nameList" :key="index">
-          <td :class="{ completed: item.checked && !item.pending, pending: item.pending && !item.checked }">
+          <td :class="getClass(item)">
             {{ item.name }}
           </td>
           <td>
@@ -31,20 +31,17 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 
-function getEnableWarning() {
-  const storedValue = localStorage.getItem("enableWarning");
-  return storedValue === 'true';
-}
-
 const showSection = ref('list');
 const newName = ref('');
 const nameList = ref([]);
+const taskColor = ref(localStorage.getItem('enableTaskColor') || 'green');
 
 onMounted(() => {
   const storedList = localStorage.getItem('nameList');
   if (storedList) {
     nameList.value = JSON.parse(storedList);
   }
+  taskColor.value = localStorage.getItem('enableTaskColor') || 'green';
 });
 
 function saveListToLocalStorage() {
@@ -63,21 +60,19 @@ function addName() {
 function pendingMessage(index) {
   const item = nameList.value[index];
   if (item.checked) {
-
     item.pending = true;
     item.checked = false;
   } else if (item.pending) {
-
     item.pending = false;
   } else {
-
     item.pending = true;
   }
   saveListToLocalStorage();
 }
 
 function delMessage(index) {
-  if (getEnableWarning()) {
+  const enableWarning = localStorage.getItem("enableWarning") === 'true';
+  if (enableWarning) {
     if (window.confirm("Do you really want to delete the task?")) {
       nameList.value.splice(index, 1);
       saveListToLocalStorage();
@@ -91,20 +86,36 @@ function delMessage(index) {
 function toggleCheckmark(index) {
   const item = nameList.value[index];
   if (item.pending) {
-    // If the item is pending, toggle to checked
     item.checked = true;
     item.pending = false;
   } else {
-    // Toggle checked state
     item.checked = !item.checked;
   }
   saveListToLocalStorage();
 }
+
+function getClass(item) {
+  return {
+    completed: item.checked && !item.pending,
+    pending: item.pending && !item.checked,
+    [`completed-${taskColor.value}`]: item.checked && !item.pending
+  };
+}
 </script>
 
 <style>
-.completed {
+.completed-green {
   color: green !important;
+  font-weight: bold !important;
+}
+
+.completed-purple {
+  color: purple !important;
+  font-weight: bold !important;
+}
+
+.completed-blue {
+  color: blue !important;
   font-weight: bold !important;
 }
 

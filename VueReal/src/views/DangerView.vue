@@ -25,14 +25,7 @@ function dellList(index) {
     saveListToLocalStorage();
   }
 }
-
-
-
-
-
 </script>
-
-
 
 <style>
 .completed {
