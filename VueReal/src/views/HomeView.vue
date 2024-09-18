@@ -29,6 +29,7 @@
 </template>
 
 <script setup>
+import { getEnablewarning } from '@/utils/settings';
 import { ref, onMounted } from 'vue';
 
 const showSection = ref('list');
@@ -71,7 +72,7 @@ function pendingMessage(index) {
 }
 
 function delMessage(index) {
-  const enableWarning = localStorage.getItem("enableWarning") === 'true';
+  const enableWarning = getEnablewarning()
   if (enableWarning) {
     if (window.confirm("Do you really want to delete the task?")) {
       nameList.value.splice(index, 1);

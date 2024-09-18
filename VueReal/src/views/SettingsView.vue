@@ -24,8 +24,8 @@
 
 <script setup>
 import { ref, watch } from 'vue';
-
-const enableWarning = ref(localStorage.getItem("enableWarning") === 'true');
+import { getEnablewarning } from '@/utils/settings';
+const enableWarning = ref(getEnablewarning());
 const taskColorOptions = ['green', 'purple', 'blue'];
 const taskColorNames = { green: 'Green', purple: 'Purple', blue: 'Blue' };
 const enableTaskColor = ref(localStorage.getItem("enableTaskColor") || 'green');
