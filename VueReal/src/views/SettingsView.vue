@@ -17,7 +17,6 @@
         <div class="setting-item">
             <p>Completed tasks color</p>
             <button @click="toggleTaskColor" :style="{ backgroundColor: currentColor }" class="square-button">
-            2
             </button>
         </div>
     </div>
