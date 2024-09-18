@@ -28,11 +28,6 @@ function dellList(index) {
 </script>
 
 <style>
-.completed {
-  color: green !important;
-  font-weight: bold !important;
-}
-
 
 .todo-container {
   border: 2px solid #000000;
