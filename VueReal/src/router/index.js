@@ -25,6 +25,11 @@ const router = createRouter({
       name: 'danger',
       component: () => import('../views/DangerView.vue')
     
+    },{
+      path: '/map',
+      name: 'map',
+      component: () => import('../views/MapView.vue')
+    
     }
 
   ]

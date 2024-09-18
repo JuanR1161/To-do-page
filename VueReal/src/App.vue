@@ -12,9 +12,11 @@
 
 const navegationItems = [
   { label: "List", route: "/" },
+  { label: "Map", route: "/map" },
   { label: "Settings", route: "/settings" },
   { label: "Danger", route: "/danger" },
   { label: "About", route: "/about" },
+  
 ]
 </script>
 
