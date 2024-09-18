@@ -2,10 +2,28 @@
   <div v-if="showSection === 'list'" class="todo-container bg-success-subtle">
     <h1>To do list</h1>
     <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>
+            Title
+          </th>
+          <th>Description</th>
+          <th> Date</th>
+          <th></th>
+        </tr>
+      </thead>
       <tbody>
         <tr v-for="(item, index) in nameList" :key="index">
           <td :class="getClass(item)">
             {{ item.name }}
+          </td>
+          <td :class="getClass(item)">
+            {{ item.descr }}
+              
+          </td>
+          <td>
+            {{ item.createdDate }}
+
           </td>
           <td>
             <div class="style-b">
@@ -23,19 +41,56 @@
         </tr>
       </tbody>
     </table>
-    <input v-model="newName" />
-    <button @click="addName">Add</button>
+    <h2>Title</h2>
+    <h1></h1>
+    <input v-model="newTask.title" />
+   
+    <h1></h1>
+    <h2>Description</h2>
+    <input v-model="newTask.descr" />
+    <button @click="addTask" >Add</button>
+  
   </div>
 </template>
+
+
+
+
 
 <script setup>
 import { getEnablewarning } from '@/utils/settings';
 import { ref, onMounted } from 'vue';
 
 const showSection = ref('list');
+const newTask = ref({})
 const newName = ref('');
+const newDesc = ref('');
 const nameList = ref([]);
+const descList = ref([]);
 const taskColor = ref(localStorage.getItem('enableTaskColor') || 'green');
+
+
+function format_time(s) {
+  const dtFormat = new Intl.DateTimeFormat('en-GB', {
+    timeStyle: 'medium',
+    timeZone: 'UTC'
+  });
+  
+  return dtFormat.format(new Date(s * 1e3));
+}
+
+console.log( format_time(12345) );
+
+
+function addTask() {
+  const noname = newTask.value.title.trim();
+  if (noname) {
+    nameList.value.push({ name: noname, checked: false, pending: false, descr: newTask.value.descr, createdDate: Date.now() });
+    newName.value = '';
+    saveListToLocalStorage();
+  }
+}
+
 
 onMounted(() => {
   const storedList = localStorage.getItem('nameList');
@@ -49,14 +104,7 @@ function saveListToLocalStorage() {
   localStorage.setItem('nameList', JSON.stringify(nameList.value));
 }
 
-function addName() {
-  const noname = newName.value.trim();
-  if (noname) {
-    nameList.value.push({ name: noname, checked: false, pending: false });
-    newName.value = '';
-    saveListToLocalStorage();
-  }
-}
+
 
 function pendingMessage(index) {
   const item = nameList.value[index];
