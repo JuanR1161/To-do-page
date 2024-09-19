@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "bootstrap": "^5.3.3",
     "leaflet": "^1.9.4",
     "pinia": "^2.1.7",
     "primevue": "^4.0.7",
