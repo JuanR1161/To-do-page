@@ -29,6 +29,9 @@
               <button @click="pendingMessage(index)">
                 <span class="checkmark">⌛</span>
               </button>
+              <button @click="editTask(index)">
+                <span class="checkmark">✏️</span>
+              </button>
               <button @click="delMessage(index)">
                 <span class="checkmark">✖</span>
               </button>
@@ -41,7 +44,7 @@
     <input v-model="newTask.title" />
     <h2>Description</h2>
     <input v-model="newTask.descr" />
-    <!-- Disable the button if title or description is empty -->
+   
     <button :disabled="!canAddTask" @click="addTask">Add</button>
   </div>
 </template>
@@ -70,6 +73,27 @@ function format_time(timestamp) {
   });
   return dtFormat.format(new Date(timestamp));
 }
+
+function editTask(index) {
+  const enableWarning = getEnablewarning();
+  const task = nameList.value[index];
+  if (enableWarning) {
+    if (window.confirm("Edit your task")) {
+
+      newTask.value.title = task.name;
+      newTask.value.descr = task.descr;
+      nameList.value.splice(index, 1);
+      saveListToLocalStorage();
+    }
+  } else {
+    newTask.value.title = task.name;
+    newTask.value.descr = task.descr;
+    nameList.value.splice(index, 1);
+    saveListToLocalStorage();
+  }
+}
+
+
 
 function addTask() {
   const noname = newTask.value.title.trim();
