@@ -44,22 +44,20 @@
     <input v-model="newTask.title" />
     <h2>Description</h2>
     <input v-model="newTask.descr" />
-   
+
     <button :disabled="!canAddTask" @click="addTask">Add</button>
   </div>
 </template>
 
 <script setup>
-import { getEnablewarning } from '@/utils/settings';
 import { ref, onMounted, computed } from 'vue';
+import { getEnablewarning } from '@/utils/settings';
 
 const showSection = ref('list');
-const newTask = ref({
-  title: '',
-  descr: ''
-});
+const newTask = ref({ title: '', descr: '' });
 const nameList = ref([]);
 const taskColor = ref(localStorage.getItem('enableTaskColor') || 'green');
+const taskColor2 = ref(localStorage.getItem('enableTaskColor2') || 'yellow');
 
 const canAddTask = computed(() => {
   return newTask.value.title.trim() !== '' && newTask.value.descr.trim() !== '';
@@ -79,7 +77,6 @@ function editTask(index) {
   const task = nameList.value[index];
   if (enableWarning) {
     if (window.confirm("Edit your task")) {
-
       newTask.value.title = task.name;
       newTask.value.descr = task.descr;
       nameList.value.splice(index, 1);
@@ -92,8 +89,6 @@ function editTask(index) {
     saveListToLocalStorage();
   }
 }
-
-
 
 function addTask() {
   const noname = newTask.value.title.trim();
@@ -112,17 +107,21 @@ function addTask() {
   }
 }
 
+
 onMounted(() => {
   const storedList = localStorage.getItem('nameList');
   if (storedList) {
     nameList.value = JSON.parse(storedList);
   }
   taskColor.value = localStorage.getItem('enableTaskColor') || 'green';
+  taskColor2.value = localStorage.getItem('enableTaskColor2') || 'yellow';
 });
+
 
 function saveListToLocalStorage() {
   localStorage.setItem('nameList', JSON.stringify(nameList.value));
 }
+
 
 function pendingMessage(index) {
   const item = nameList.value[index];
@@ -137,6 +136,7 @@ function pendingMessage(index) {
   saveListToLocalStorage();
 }
 
+
 function delMessage(index) {
   const enableWarning = getEnablewarning();
   if (enableWarning) {
@@ -150,6 +150,7 @@ function delMessage(index) {
   }
 }
 
+
 function toggleCheckmark(index) {
   const item = nameList.value[index];
   if (item.pending) {
@@ -161,15 +162,14 @@ function toggleCheckmark(index) {
   saveListToLocalStorage();
 }
 
+
 function getClass(item) {
   return {
     [`completed-${taskColor.value}`]: item.checked && !item.pending,
-    pending: item.pending && !item.checked
+    [`pending-${taskColor2.value}`]: item.pending && !item.checked
   };
 }
-
 </script>
-
 
 <style>
 .completed-green {
@@ -184,6 +184,36 @@ function getClass(item) {
 
 .completed-blue {
   color: blue !important;
+  font-weight: bold !important;
+}
+
+.completed-yellow {
+  color: yellow !important;
+  font-weight: bold !important;
+}
+
+.completed-red {
+  color: red !important;
+  font-weight: bold !important;
+}
+
+.completed-brown {
+  color: brown !important;
+  font-weight: bold !important;
+}
+
+.pending-yellow {
+  color: yellow !important;
+  font-weight: bold !important;
+}
+
+.pending-red {
+  color: red !important;
+  font-weight: bold !important;
+}
+
+.pending-brown {
+  color: brown !important;
   font-weight: bold !important;
 }
 
